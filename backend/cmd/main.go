@@ -7,5 +7,8 @@ import (
 
 func main() {
 	cfg := config.LoadConfig()
-	database.ConnectDatabase(cfg)	
+	database.ConnectDatabase(cfg)
+// 	database.DB.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
+//  database.Migrate()
+
 }
