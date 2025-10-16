@@ -7,9 +7,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtsecret = []byte(os.Getenv("JWT_SECRET"))
-
 func GenerateToken(teamid string) (string, error) {
+	var jwtsecret = []byte(os.Getenv("JWT_SECRET"))
 	claims := jwt.MapClaims{
 		"team_id": teamid,
 		"exp":     time.Now().Add(time.Hour * 24).Unix(),
