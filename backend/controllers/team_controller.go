@@ -83,3 +83,29 @@ func LoginTeam(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }
+
+func ListProblems(c *gin.Context) {
+	var problems []models.Problem
+
+	if err := database.DB.Find(&problems).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch problems"})
+		return
+	}
+
+	type problemDTO struct {
+		ID               uint   `json:"id"`
+		ProblemStatement string `json:"problem"`
+		ExpectedSolution string `json:"solution"`
+	}
+
+	result := make([]problemDTO, len(problems))
+	for i, p := range problems {
+		result[i] = problemDTO{
+			ID:               p.ID,
+			ProblemStatement: p.ProblemStatement,
+			ExpectedSolution: p.ExpectedSolution,
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"problems": result})
+}

@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"backend/controllers"
 	"backend/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 func RegisterTeamRoutes(router *gin.Engine) {
@@ -11,6 +12,7 @@ func RegisterTeamRoutes(router *gin.Engine) {
 	{
 		api.POST("/register", controllers.RegisterTeam)
 		api.POST("/login", controllers.LoginTeam)
+		api.GET("/listproblems", controllers.ListProblems)
 
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())
