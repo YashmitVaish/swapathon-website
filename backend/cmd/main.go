@@ -11,11 +11,12 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	database.ConnectDatabase(cfg)
-	database.Migrate()
+	database.DB.AutoMigrate()
 
 	router := gin.Default()
-	routes.RegisterTeamRoutes(router)
+	routes.TeamRoutes(router)
 	routes.AdminRoutes(router)
+	routes.SubmissionRoutes(router)
 
 	router.Run(":8080")
 }

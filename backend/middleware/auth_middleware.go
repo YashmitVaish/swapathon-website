@@ -48,7 +48,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
 			if teamID, exists := claims["team_id"]; exists {
 				c.Set("team_id", teamID.(string))
-				c.Set("role","user")
+				c.Set("role", "user")
 			} else {
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing team_id in token"})
 				c.Abort()

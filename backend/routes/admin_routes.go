@@ -17,6 +17,7 @@ func AdminRoutes(router *gin.Engine) {
 		{
 			protected.GET("/dashboard-admin", controllers.ListTeams)
 			protected.POST("/add-problem", controllers.AddProblemStatement)
+			protected.GET("/team", controllers.ViewTeamDetails)
 		}
 	}
 }

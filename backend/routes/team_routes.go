@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterTeamRoutes(router *gin.Engine) {
+func TeamRoutes(router *gin.Engine) {
 	api := router.Group("/api/teams")
 	{
 		api.POST("/register", controllers.RegisterTeam)
@@ -18,6 +18,8 @@ func RegisterTeamRoutes(router *gin.Engine) {
 		protected.Use(middleware.AuthMiddleware())
 		{
 			protected.GET("/get-data", controllers.ViewDetails)
+			protected.GET("/view-for-swap",controllers.ViewForSwap)
+			protected.GET("/viewfinal",controllers.ViewFinal)
 		}
 	}
 }

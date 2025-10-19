@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"fmt"
 	"backend/database"
 	"backend/models"
+	"fmt"
 	"net/http"
+
 	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
@@ -24,11 +25,6 @@ func SubmitPhase1(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if input.LockedIndex < 1 || input.LockedIndex > 4 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "locked_index must be between 1 and 4"})
 		return
 	}
 
@@ -69,11 +65,6 @@ func SubmitPhase2(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if input.SolutionIndex < 1 || input.SolutionIndex > 4 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "solution_index must be between 1 and 4"})
 		return
 	}
 
@@ -118,8 +109,8 @@ func SubmitPhase2(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":        "Phase 2 update successful",
-		"updated_field":  input.SolutionIndex,
-		"updated_idea":   input.UpdatedSolution,
+		"message":       "Phase 2 update successful",
+		"updated_field": input.SolutionIndex,
+		"updated_idea":  input.UpdatedSolution,
 	})
 }
