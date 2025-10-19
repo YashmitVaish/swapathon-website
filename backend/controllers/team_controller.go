@@ -109,3 +109,75 @@ func ListProblems(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"problems": result})
 }
+
+func ViewDetails(c *gin.Context) {
+	teamID := c.GetString("team_id")
+	if teamID == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized or invalid token"})
+		return
+	}
+
+	var team models.Team
+
+	if err := database.DB.Where("id = ?", teamID).First(&team).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"team_name":         team.TeamName,
+		"leader_name":       team.LeaderName,
+		"email_id":          team.Email,
+		"problem_statement": team.ProblemStatement,
+		"members":           team.Members,
+	})
+
+}
+
+func ViewForSwap(c *gin.Context) {
+	teamID := c.GetString("team_id")
+
+	if teamID == "" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized or Invalid token"})
+		return
+	}
+
+	var submission models.Submission
+
+	if err := database.DB.Where("swap_with_id = ?", teamID).First(&submission).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"sol1":         submission.SOL1,
+		"sol2":         submission.SOL2,
+		"sol3":         submission.SOL3,
+		"sol4":         submission.SOL4,
+		"locked_index": submission.LockedIndex,
+	})
+}
+
+func ViewFinal(c *gin.Context) {
+	teamID := c.GetString("team_id")
+
+	if teamID == "" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized or Invalid token"})
+		return
+	}
+
+	var submission models.Submission
+
+	if err := database.DB.Where("id = ?", teamID).First(&submission).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"sol1":         submission.SOL1,
+		"sol2":         submission.SOL2,
+		"sol3":         submission.SOL3,
+		"sol4":         submission.SOL4,
+		"locked_index": submission.LockedIndex,
+	})
+}

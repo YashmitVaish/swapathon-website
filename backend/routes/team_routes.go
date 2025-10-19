@@ -17,9 +17,7 @@ func RegisterTeamRoutes(router *gin.Engine) {
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())
 		{
-			protected.GET("/dashboard", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Welcome to your dashboard!"})
-			})
+			protected.GET("/get-data", controllers.ViewDetails)
 		}
 	}
 }

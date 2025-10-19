@@ -47,6 +47,7 @@ func AdminMiddleware() gin.HandlerFunc {
 
 		if teamID, ok := claims["team_id"].(string); ok {
 			c.Set("team_id", teamID)
+			c.Set("role","admin")
 		}
 
 		c.Next()

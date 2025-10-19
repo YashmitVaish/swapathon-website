@@ -16,7 +16,7 @@ func AdminRoutes(router *gin.Engine) {
 		protected.Use(middleware.AdminMiddleware())
 		{
 			protected.GET("/dashboard-admin", controllers.ListTeams)
-			protected.POST("/add-problem",controllers.AddProblemStatement)
+			protected.POST("/add-problem", controllers.AddProblemStatement)
 		}
 	}
 }
