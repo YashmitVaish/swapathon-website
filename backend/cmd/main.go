@@ -11,7 +11,7 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	database.ConnectDatabase(cfg)
-	database.DB.AutoMigrate()
+	database.Migrate()
 
 	router := gin.Default()
 	routes.TeamRoutes(router)
