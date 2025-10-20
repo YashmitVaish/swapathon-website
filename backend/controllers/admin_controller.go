@@ -4,9 +4,11 @@ import (
 	"backend/database"
 	"backend/models"
 	"backend/utils"
+	"math/rand"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type LoginAdminInput struct {
@@ -120,7 +122,7 @@ func ViewTeamDetails(c *gin.Context) {
 
 	var submission models.Submission
 
-	if err := database.DB.Where("id = ?", teamID).First(&submission).Error; err != nil {
+	if err := database.DB.Where("team_id = ?", teamID).First(&submission).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"team_name":         details.TeamName,
 			"leader_name":       details.LeaderName,
@@ -141,5 +143,83 @@ func ViewTeamDetails(c *gin.Context) {
 		"sol2":              submission.SOL2,
 		"sol3":              submission.SOL3,
 		"sol4":              submission.SOL4,
+	})
+}
+
+func reverse[T any](arr []T, start, end int) {
+	for start < end {
+		arr[start], arr[end] = arr[end], arr[start]
+		start++
+		end--
+	}
+}
+
+func circularShiftInPlace[T any](arr []T, n int) {
+	length := len(arr)
+	if length == 0 {
+		return
+	}
+
+	n = ((n % length) + length) % length
+	if n == 0 {
+		return
+	}
+
+	reverse(arr, 0, length-1)
+	reverse(arr, 0, n-1)
+	reverse(arr, n, length-1)
+}
+
+func PrepareSwap(c *gin.Context) {
+	var teams []models.Team
+	if err := database.DB.Find(&teams).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve teams",
+		})
+		return
+	}
+
+	if len(teams) < 2 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Need at least 2 teams to perform swap",
+		})
+		return
+	}
+
+	var submissions []models.Submission
+	if err := database.DB.Find(&submissions).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve submissions",
+		})
+		return
+	}
+
+	if len(submissions) != len(teams) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Submissions and teams count mismatch",
+		})
+		return
+	}
+
+	ids := make([]uuid.UUID, len(teams))
+	for i := range teams {
+		ids[i] = teams[i].ID
+	}
+
+	offset := rand.Intn(len(ids)-1) + 1 // ensure not 0 shift
+	circularShiftInPlace(ids, offset)
+
+	for i := range submissions {
+		submissions[i].SwapWithID = ids[i]
+		if err := database.DB.Save(&submissions[i]).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to update submissions",
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Swap assignments prepared successfully",
 	})
 }

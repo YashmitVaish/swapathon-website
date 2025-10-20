@@ -168,7 +168,7 @@ func ViewFinal(c *gin.Context) {
 
 	var submission models.Submission
 
-	if err := database.DB.Where("id = ?", teamID).First(&submission).Error; err != nil {
+	if err := database.DB.Where("team_id = ?", teamID).First(&submission).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
 		return
 	}
