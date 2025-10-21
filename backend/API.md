@@ -235,7 +235,7 @@ Protected (require `Authorization: Bearer <admin-token>`):
 ---
 
 ## Useful env vars
-- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` or `DATABASE_URL`
+- `DATABASE_URL` (neon.tech hostel h )
 - `JWT_SECRET` (for team tokens)
 - `JWT_ADMIN_SECRET` (for admin tokens)
 
