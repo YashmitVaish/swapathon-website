@@ -239,10 +239,3 @@ Protected (require `Authorization: Bearer <admin-token>`):
 - `JWT_SECRET` (for team tokens)
 - `JWT_ADMIN_SECRET` (for admin tokens)
 
----
-
-If you want, I can:
-- Extend this into an OpenAPI (Swagger) spec.
-- Add request/response examples for every endpoint (curl + JSON examples).
-- Generate Postman collection.
-
