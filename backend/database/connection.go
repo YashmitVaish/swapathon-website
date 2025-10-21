@@ -21,7 +21,6 @@ func ConnectDatabase(cfg *config.Config) {
 		dsn = databaseURL
 		log.Println("DB CONNECTED")
 	} else {
-		// fallback to manual config
 		dsn = fmt.Sprintf(
 			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 			cfg.DBHost, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBPort,

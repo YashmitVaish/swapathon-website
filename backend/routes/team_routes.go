@@ -13,6 +13,7 @@ func TeamRoutes(router *gin.Engine) {
 		api.POST("/register", controllers.RegisterTeam)
 		api.POST("/login", controllers.LoginTeam)
 		api.GET("/listproblems", controllers.ListProblems)
+		api.GET("/ws",controllers.WebSocketHandler)
 
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())

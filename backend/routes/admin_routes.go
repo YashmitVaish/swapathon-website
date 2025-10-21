@@ -19,6 +19,7 @@ func AdminRoutes(router *gin.Engine) {
 			protected.POST("/add-problem", controllers.AddProblemStatement)
 			protected.GET("/team", controllers.ViewTeamDetails)
 			protected.GET("/swap",controllers.PrepareSwap)
+			protected.POST("/notify",controllers.BroadcastNotification)
 		}
 	}
 }

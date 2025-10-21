@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"encoding/json"
+	
 	"backend/database"
 	"backend/models"
 	"backend/utils"
@@ -222,4 +224,27 @@ func PrepareSwap(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Swap assignments prepared successfully",
 	})
+}
+
+type Notification struct {
+	Heading string `json:"heading"`
+	Message string `json:"message"`
+}
+
+func BroadcastNotification(c *gin.Context) {
+	var notif Notification
+	if err := c.BindJSON(&notif); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+
+	if HubInstance == nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Hub not initialized"})
+        return
+    }
+
+	payload, _ := json.Marshal(notif)
+	HubInstance.Broadcast <- payload
+
+	c.JSON(http.StatusOK, gin.H{"status": "broadcasted"})
 }
