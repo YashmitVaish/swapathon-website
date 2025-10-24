@@ -1,20 +1,34 @@
 import React from 'react'
 import branches from '../assets/branches.png'
-import Seal from '../assets/AcmSeal.png'
 import banner from '../assets/banner.png'
-import grass from '../assets/grassSamurai.png'
+import grass from '../assets/grass.png'
+import samurai from '../assets/samurai.png'
+import Navbar from '../components/Navbar'
+
 function Homepage() {
   return (
-     <div className="relative h-screen w-screen overflow-hidden">
+    <div
+  className=" h-screen w-screen overflow-hidden bg-cover bg-center"
+  style={{
+    backgroundImage: `url(${banner})`,
+ 
+  }}
+>
+        <div className="mt-5">
+<Navbar></Navbar>
+      </div>
+      <div className='absolute top-0 left-0 z-10'>
+
       <img  
         src={branches}
         alt="branches"
-        className="absolute  z-10 max-w-[30%] md:max-w-[20%] "
-      />
+        className="  z-10 min-w-[70%] md:max-w-[20%] "
+        />
+        </div>
       <div className='flex justify-end'>
 
       <div className='flex flex-col'>
-        <div className="font-lastshuriken  mr-30 text-4xl mt-30">
+        <div className="font-lastshuriken  mr-30 text-4xl mt-8">
          Feature Creep Chaos
         </div>
          <div className='font-zenantique flex justify-end mr-30 text-3xl mt-1'>
@@ -23,26 +37,16 @@ function Homepage() {
           </div>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative flex items-center justify-center">
-          <img
-            src={banner}
-            alt="banner"
-            className=" max-w-screen "
-          />
-          <img
-            src={Seal}
-            alt="seal"
-            className="absolute"
-          />
-        </div>
-      </div>
-
+<div className='absolute bottom-0'>
       <img
         src={grass}
         alt="grass"
-        className="absolute bottom-0 left-0 w-full h-100 z-10"
-      />
+        className=" z-10"
+        />
+        </div>
+        <div className=' absolute bottom-0 right-40'>
+          <img src={samurai} alt="" className='h-100'/>
+        </div>
     </div>
   )
 }
