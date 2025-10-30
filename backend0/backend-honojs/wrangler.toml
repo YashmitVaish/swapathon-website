@@ -1,0 +1,23 @@
+name = "swapathon-backend"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "swapathon-db"
+database_id = "swapathon-db-id"
+
+[durable_objects]
+bindings = [{ name = "WS_HUB", class_name = "WsHub" }]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["WsHub"]
+
+[vars]
+JWT_ISS = "swapathon"
+JWT_AUD = "swapathon-clients"
+CORS_ORIGINS = "http://localhost:5173"
+
+[observability]
+enabled = true
