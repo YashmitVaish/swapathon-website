@@ -5,14 +5,14 @@ compatibility_date = "2024-09-23"
 [[d1_databases]]
 binding = "DB"
 database_name = "swapathon-db"
-database_id = "swapathon-db-id"
+database_id = "e16ea37b-4cda-4982-8637-522bd9c2bbcc"  
 
 [durable_objects]
 bindings = [{ name = "WS_HUB", class_name = "WsHub" }]
 
 [[migrations]]
 tag = "v1"
-new_classes = ["WsHub"]
+new_sqlite_classes = ["WsHub"]
 
 [vars]
 JWT_ISS = "swapathon"
