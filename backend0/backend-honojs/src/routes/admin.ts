@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import type { Env } from "../env";
 import { getDb } from "../db/client";
 import { admins, teams, submissions, problems } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { issueAdminToken } from "../auth/jwt";
 import { authAdmin } from "../middleware/authAdmin";
 import bcrypt from "bcryptjs";
@@ -154,18 +154,24 @@ adminApp.get("/swap", authAdmin, async (c) => {
   }
 
   const teamIds = teamsList.map((t) => t.id);
-
   const offset = Math.floor(Math.random() * (teamIds.length - 1)) + 1;
 
-  await db.batch(
-    submissionsList.map((sub, idx) => {
-      const newIdx = (idx + offset) % teamIds.length;
-      return db
+  const updates = [];
+
+  for (const sub of submissionsList) {
+    const teamIndex = teamIds.indexOf(sub.teamId);
+    const newIndex = (teamIndex + offset) % teamIds.length;
+    const swapWithId = teamIds[newIndex];
+
+    updates.push(
+      db
         .update(submissions)
-        .set({ swapWithId: teamIds[newIdx] })
-        .where(eq(submissions.id, sub.id));
-    })
-  );
+        .set({ swapWithId })
+        .where(eq(submissions.id, sub.id))
+    );
+  }
+
+  await db.batch(updates);
 
   return c.json({ message: "Swap assignments prepared successfully" });
 });
