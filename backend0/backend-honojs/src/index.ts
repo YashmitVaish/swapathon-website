@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import type { Env } from "./env";
+import { WsHub } from "./do/WsHub";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -23,3 +24,4 @@ app.use(
 app.get("/health", (c) => c.json({ ok: true }));
 
 export default app;
+export { WsHub };
