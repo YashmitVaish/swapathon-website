@@ -1,4 +1,4 @@
-import type { DurableObjectState, WebSocket } from "@cloudflare/workers-types";
+import type { DurableObjectState } from "@cloudflare/workers-types";
 import type { Env } from "../env";
 
 export class WsHub {
@@ -16,20 +16,20 @@ export class WsHub {
     const url = new URL(req.url);
 
     if (url.pathname === "/ws") {
-      if (req.headers.get("Upgrade") === "websocket") {
-        const pair = new WebSocketPair();
-        const [client, server] = Object.values(pair);
-
-        this.sessions.add(server);
-        this.acceptWebSocket(server);
-
-        return new Response(null, {
-          status: 101,
-          webSocket: client,
-        });
+      if (req.headers.get("Upgrade") !== "websocket") {
+        return new Response("Expected WebSocket", { status: 400 });
       }
 
-      return new Response("Expected WebSocket", { status: 400 });
+      const pair = new WebSocketPair();
+      const [client, server] = Object.values(pair) as [WebSocket, WebSocket];
+
+      this.sessions.add(server);
+      this.handleSession(server);
+
+      return new Response(null, {
+        status: 101,
+        webSocket: client,
+      });
     }
 
     if (url.pathname === "/notify" && req.method === "POST") {
@@ -39,15 +39,17 @@ export class WsHub {
       const deadSessions: WebSocket[] = [];
       this.sessions.forEach((session) => {
         try {
-          session.send(message);
+          if (session.readyState === 1) {
+            session.send(message);
+          } else {
+            deadSessions.push(session);
+          }
         } catch (err) {
           deadSessions.push(session);
         }
       });
 
-      deadSessions.forEach((session) => {
-        this.sessions.delete(session);
-      });
+      deadSessions.forEach((session) => this.sessions.delete(session));
 
       return new Response(JSON.stringify({ status: "broadcasted" }), {
         headers: { "Content-Type": "application/json" },
@@ -57,7 +59,7 @@ export class WsHub {
     return new Response("Not found", { status: 404 });
   }
 
-  acceptWebSocket(ws: WebSocket) {
+  private handleSession(ws: WebSocket) {
     ws.accept();
 
     ws.addEventListener("close", () => {

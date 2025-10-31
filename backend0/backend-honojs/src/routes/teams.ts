@@ -185,7 +185,16 @@ teamsApp.get("/ws", async (c) => {
   const stub = c.env.WS_HUB.idFromName("main");
   const doInstance = c.env.WS_HUB.get(stub);
 
-  return doInstance.fetch(c.req.raw);
+  const url = new URL(c.req.url);
+  url.pathname = "/ws";
+
+  const req = new Request(url.toString(), {
+    method: c.req.method,
+    headers: c.req.header(),
+    body: c.req.method !== "GET" && c.req.method !== "HEAD" ? c.req.raw.body : undefined,
+  });
+
+  return doInstance.fetch(req);
 });
 
 export default teamsApp;
