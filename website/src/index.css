@@ -1,19 +1,26 @@
 @import "tailwindcss";
+@import url("https://rsms.me/inter/inter.css");
+
 @font-face {
   font-family: 'TheLastShuriken';
   src: url('../public/fonts/The\ Last\ Shuriken.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'ZenAntique';
   src: url('../public/fonts/ZenAntique.woff2');
 }
+
 @layer utilities {
   .font-lastshuriken {
     font-family: "TheLastShuriken", sans-serif;
   }
-  .font-zenantique{
-    font-family: "ZenAntique",sans-serif;
+  .font-zenantique {
+    font-family: "ZenAntique", sans-serif;
+  }
+  .font-inter {
+    font-family: 'Inter', sans-serif;
   }
 }
