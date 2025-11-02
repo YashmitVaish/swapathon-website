@@ -2,16 +2,21 @@ package controllers
 
 import (
 	"encoding/json"
+	"math/rand"
+	"time"
 	
 	"backend/database"
 	"backend/models"
 	"backend/utils"
-	"math/rand"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 type LoginAdminInput struct {
 	Username string `json:"username" binding:"required"`
@@ -203,21 +208,32 @@ func PrepareSwap(c *gin.Context) {
 		return
 	}
 
+	// Extract team IDs
 	ids := make([]uuid.UUID, len(teams))
 	for i := range teams {
 		ids[i] = teams[i].ID
 	}
 
+	// Shuffle the IDs
 	offset := rand.Intn(len(ids)-1) + 1 // ensure not 0 shift
 	circularShiftInPlace(ids, offset)
 
+	// Create a map of team_id -> submission for correct matching
+	submissionMap := make(map[uuid.UUID]*models.Submission)
 	for i := range submissions {
-		submissions[i].SwapWithID = ids[i]
-		if err := database.DB.Save(&submissions[i]).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Failed to update submissions",
-			})
-			return
+		submissionMap[submissions[i].TeamID] = &submissions[i]
+	}
+
+	// Assign swaps correctly: each team's submission gets a swapped team ID
+	for i := range teams {
+		if sub, ok := submissionMap[teams[i].ID]; ok {
+			sub.SwapWithID = ids[i]
+			if err := database.DB.Save(sub).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "Failed to update submissions",
+				})
+				return
+			}
 		}
 	}
 
