@@ -239,11 +239,15 @@ func BroadcastNotification(c *gin.Context) {
 	}
 
 	if HubInstance == nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Hub not initialized"})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Hub not initialized"})
+		return
+	}
 
-	payload, _ := json.Marshal(notif)
+	payload, err := json.Marshal(notif)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal notification"})
+		return
+	}
 	HubInstance.Broadcast <- payload
 
 	c.JSON(http.StatusOK, gin.H{"status": "broadcasted"})
