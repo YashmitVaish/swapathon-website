@@ -45,9 +45,13 @@ func AdminMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if teamID, ok := claims["team_id"].(string); ok {
-			c.Set("team_id", teamID)
+		// Check if token has admin role
+		if role, ok := claims["role"].(string); ok && role == "admin" {
 			c.Set("role", "admin")
+		} else {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid admin token"})
+			c.Abort()
+			return
 		}
 
 		c.Next()

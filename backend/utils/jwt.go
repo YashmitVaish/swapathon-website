@@ -20,7 +20,8 @@ func GenerateToken(teamid string) (string, error) {
 func GenerateAdminToken() (string, error) {
 	var jwtsecret = []byte(os.Getenv("JWT_ADMIN_SECRET"))
 	claims := jwt.MapClaims{
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"role": "admin",
+		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtsecret)
