@@ -28,6 +28,12 @@ func SubmitPhase1(c *gin.Context) {
 		return
 	}
 
+	// Validate LockedIndex must be between 1 and 4
+	if input.LockedIndex < 1 || input.LockedIndex > 4 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "locked_index must be between 1 and 4"})
+		return
+	}
+
 	teamID := c.GetString("team_id")
 
 	var existing models.Submission

@@ -26,11 +26,17 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		claims := jwt.MapClaims{}
+		jwtSecret := os.Getenv("JWT_SECRET")
+		if jwtSecret == "" {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "JWT_SECRET not configured"})
+			c.Abort()
+			return
+		}
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, jwt.ErrTokenInvalidClaims
 			}
-			return []byte(os.Getenv("JWT_SECRET")), nil
+			return []byte(jwtSecret), nil
 		})
 
 		if err != nil {

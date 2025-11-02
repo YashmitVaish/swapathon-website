@@ -26,11 +26,17 @@ func AdminMiddleware() gin.HandlerFunc {
 		}
 
 		claims := jwt.MapClaims{}
+		jwtAdminSecret := os.Getenv("JWT_ADMIN_SECRET")
+		if jwtAdminSecret == "" {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "JWT_ADMIN_SECRET not configured"})
+			c.Abort()
+			return
+		}
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, jwt.ErrTokenInvalidClaims
 			}
-			return []byte(os.Getenv("JWT_ADMIN_SECRET")), nil
+			return []byte(jwtAdminSecret), nil
 		})
 
 		if err != nil {

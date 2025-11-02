@@ -96,7 +96,6 @@ func ListProblems(c *gin.Context) {
 	type problemDTO struct {
 		ID               uint   `json:"id"`
 		ProblemStatement string `json:"problem"`
-		ExpectedSolution string `json:"solution"`
 	}
 
 	result := make([]problemDTO, len(problems))
@@ -104,7 +103,6 @@ func ListProblems(c *gin.Context) {
 		result[i] = problemDTO{
 			ID:               p.ID,
 			ProblemStatement: p.ProblemStatement,
-			ExpectedSolution: p.ExpectedSolution,
 		}
 	}
 
