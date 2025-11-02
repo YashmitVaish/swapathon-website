@@ -39,17 +39,13 @@ func AdminMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		if !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
-			c.Abort()
-			return
-		}
+	if !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+		c.Abort()
+		return
+	}
 
-		if teamID, ok := claims["team_id"].(string); ok {
-			c.Set("team_id", teamID)
-			c.Set("role", "admin")
-		}
-
-		c.Next()
+	c.Set("role", "admin")
+	c.Next()
 	}
 }

@@ -90,6 +90,11 @@ func SubmitPhase2(c *gin.Context) {
 		return
 	}
 
+	if input.SolutionIndex < 1 || input.SolutionIndex > 4 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid solution index. Must be between 1 and 4"})
+		return
+	}
+
 	switch input.SolutionIndex {
 	case 1:
 		submission.SOL1 = input.UpdatedSolution

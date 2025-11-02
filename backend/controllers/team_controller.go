@@ -29,6 +29,7 @@ func RegisterTeam(c *gin.Context) {
 	hash, err := utils.HashPassword(input.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "password hashing failed contact admin"})
+		return
 	}
 
 	team := models.Team{

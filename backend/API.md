@@ -16,9 +16,18 @@ Base URL: http://localhost:8080
 
 ### Team Routes (/api/teams)
 
-1) POST /api/teaent": "string",
+1) POST /api/teams/register
 
-- "members": "string"
+- Description: Register a new team.
+- Auth: none
+- Request JSON:
+  {
+    "team_name": "string",
+    "leader_name": "string",
+    "email": "string",
+    "password": "string",
+    "problem_statement": "string",
+    "members": "string"
   }
 - Success (201):
   { "message": "team registered succesfully " }
