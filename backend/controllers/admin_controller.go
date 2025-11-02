@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
-	
+	"math/rand"
+	"net/http"
+	"time"
+
 	"backend/database"
 	"backend/models"
 	"backend/utils"
-	"math/rand"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -208,6 +209,8 @@ func PrepareSwap(c *gin.Context) {
 		ids[i] = teams[i].ID
 	}
 
+	// Seed random number generator for unpredictable swap offsets
+	rand.Seed(time.Now().UnixNano())
 	offset := rand.Intn(len(ids)-1) + 1 // ensure not 0 shift
 	circularShiftInPlace(ids, offset)
 
