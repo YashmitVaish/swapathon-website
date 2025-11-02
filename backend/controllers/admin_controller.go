@@ -130,7 +130,7 @@ func ViewTeamDetails(c *gin.Context) {
 			"leader_name":       details.LeaderName,
 			"problem_statement": details.ProblemStatement,
 			"members":           details.Members,
-			"submssion":         "no submission yet",
+			"submission":         "no submission yet",
 		})
 		return
 	}
