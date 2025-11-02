@@ -46,7 +46,7 @@ func RegisterTeam(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "team registered succesfully "})
+	c.JSON(http.StatusCreated, gin.H{"message": "team registered successfully"})
 
 }
 
