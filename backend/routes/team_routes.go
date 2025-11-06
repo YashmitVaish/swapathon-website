@@ -13,14 +13,15 @@ func TeamRoutes(router *gin.Engine) {
 		api.POST("/register", controllers.RegisterTeam)
 		api.POST("/login", controllers.LoginTeam)
 		api.GET("/listproblems", controllers.ListProblems)
-		api.GET("/ws",controllers.WebSocketHandler)
+		api.GET("/ws", controllers.WebSocketHandler)
+		api.POST("/register-user", controllers.RegisterUser)
 
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())
 		{
 			protected.GET("/get-data", controllers.ViewDetails)
-			protected.GET("/view-for-swap",controllers.ViewForSwap)
-			protected.GET("/viewfinal",controllers.ViewFinal)
+			protected.GET("/view-for-swap", controllers.ViewForSwap)
+			protected.GET("/viewfinal", controllers.ViewFinal)
 		}
 	}
 }

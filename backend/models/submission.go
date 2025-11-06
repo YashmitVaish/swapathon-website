@@ -7,8 +7,8 @@ import (
 
 type Submission struct {
 	gorm.Model
-	TeamID           uuid.UUID `gorm:"type:uuid;not null"`
-	SwapWithID       uuid.UUID `gorm:"type:uuid"`
+	TeamID           uuid.UUID `gorm:"type:uuid;not null;index"`
+	SwapWithID       uuid.UUID `gorm:"type:uuid;index"`
 	ProblemStatement string    `gorm:"type:text;not null"`
 	SOL1             string    `gorm:"type:text;not null"`
 	SOL2             string    `gorm:"type:text;not null"`

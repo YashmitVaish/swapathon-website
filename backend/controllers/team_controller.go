@@ -181,3 +181,32 @@ func ViewFinal(c *gin.Context) {
 		"locked_index": submission.LockedIndex,
 	})
 }
+
+type UserInput struct {
+	Name       string `json:"name" binding:"required" `
+	Email      string `json:"email" binding:"required,email"`
+	RollNumber int    `json:"rollnumber" binding:"required,email"`
+}
+
+
+func RegisterUser(c *gin.Context){
+	var uinput UserInput
+	if err:= c.ShouldBindJSON(&uinput); err != nil{
+		c.JSON(http.StatusBadRequest,gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	user := models.User{
+		Name: uinput.Name,
+		Email: uinput.Email,
+		RollNumber: uinput.RollNumber,
+	}
+
+	if err := database.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email or User already exists"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "User registered succesfully "})
+}
