@@ -1,0 +1,73 @@
+.st0 {
+  stroke:#2d2f2f;
+  fill:#2d2f2f;
+  stroke-width:3;
+  display:inline;
+  stroke-dasharray:1500;
+  stroke-dashoffset:1500;
+  animation-name:draw;
+  animation-duration:3s; /* ↓ from 3s */
+  animation-iteration-count:1;
+  animation-fill-mode:forwards;
+  animation-timing-function:linear;
+  -webkit-animation-name:draw;
+  -webkit-animation-duration:2s;
+  -webkit-animation-iteration-count:1;
+  -webkit-animation-fill-mode:forwards;
+  -webkit-animation-timing-function:linear;
+  -moz-animation-name:draw;
+  -moz-animation-duration:2s;
+  -moz-animation-iteration-count:1;
+  -moz-animation-fill-mode:forwards;
+  -moz-animation-timing-function:linear;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset:0; }
+}
+
+svg {
+  max-width:100%;
+  max-height:100%;
+  margin:0;
+}
+
+.st1{ fill:#C47A83; }
+.st2{ fill:#F0A0A3; }
+.st3{ fill:#DB898F; }
+.st4{ fill:#E8BCC2; }
+
+.wrap { }
+
+.flower {
+  opacity:0;
+}
+
+rect {
+  -webkit-animation:popdown 5s ease forwards; /* ↓ from 5s */
+  animation:popdown 3s ease forwards;
+  fill:#65c1c6;
+  -webkit-perspective:1000;
+  -webkit-backface-visibility:hidden;
+  -moz-animation:popdown 3s ease forwards;
+}
+
+@keyframes popdown {
+  from { transform:translateY(-100px); }
+  to { transform:translateY(150px); }
+}
+
+text {
+  text-align:center;
+  animation:hideshow 3s forwards; /* ↓ from 3s */
+  animation-delay:5s; /* ↓ from 5s */
+  opacity:0;
+  -webkit-animation:hideshow 2s forwards;
+  -webkit-animation-delay:3s;
+  -moz-animation:hideshow 2s forwards;
+}
+
+@keyframes hideshow {
+  from { opacity:0; }
+  to { opacity:1; }
+}

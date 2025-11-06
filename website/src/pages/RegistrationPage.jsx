@@ -1,34 +1,46 @@
-import React from 'react'
-import bg from '../assets/lakeBg.png'
-import Navbar from '../components/Navbar'
-import RegistrationBox from '../components/RegistrationBox'
-import Seal from '../assets/AcmSeal.png'
+import React from "react";
+import Navbar from "../components/Navbar";
+import bgR from "../assets/bgR.png";
+import RegistrationBox from "../components/RegistrationBox";
+import { motion } from "framer-motion";
+
 function RegistrationPage() {
   return (
-      <div
-  className=" h-screen w-screen overflow-hidden bg-cover bg-center"
-  style={{
-    backgroundImage: `url(${bg})`,
- 
-  }}
->
-        <div className="mt-5">
-<Navbar></Navbar>
+    <div
+      className="h-screen w-full bg-cover bg-center overflow-y-hidden overflow-x-hidden relative"
+      style={{
+        backgroundImage: `url(${bgR})`,
+      }}
+    >
+      {/* Soft blur overlay */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[3px]"></div>
+
+      {/* Content wrapper */}
+      <div className="relative flex flex-col h-full">
+        {/* Navbar */}
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mt-5 z-10"
+        >
+          <Navbar />
+        </motion.div>
+
+        {/* Registration Box */}
+        <div className="flex flex-1 justify-center  items-center lg:items-start px-6 lg:px-20 z-10">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="flex justify-center"
+          >
+            <RegistrationBox />
+          </motion.div>
+        </div>
       </div>
-<div className="flex justify-center flex-wrap gap-40 mt-10 mr-15">
-    <div className='flex items-center'>
-
-    <div>
-        <img src={Seal} alt=""  className='w-140'/>
     </div>
-    </div>
-    <div>
-        <RegistrationBox></RegistrationBox>
-
-    </div>
-</div>
-    </div>
-  )
+  );
 }
 
-export default RegistrationPage
+export default RegistrationPage;
