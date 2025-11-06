@@ -24,3 +24,12 @@
     font-family: 'Inter', sans-serif;
   }
 }
+
+.transition-container.fade-in {
+  opacity: 1;
+}
+
+.transition-container.fade-out {
+  opacity: 0;
+  background-color: white;
+}

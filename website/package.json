@@ -11,10 +11,14 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.15",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.552.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.4",
-    "tailwindcss": "^4.1.15"
+    "react-router-dom": "^7.9.5",
+    "tailwindcss": "^4.1.15",
+    "velocity-animate": "^1.5.2",
+    "velocity-ui-pack": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
