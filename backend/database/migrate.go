@@ -12,6 +12,7 @@ func Migrate() {
 		&models.Admin{},
 		&models.Problem{},
 		&models.Submission{},
+		&models.User{},
 	)
 
 	if err != nil {

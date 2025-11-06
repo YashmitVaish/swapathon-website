@@ -4,6 +4,7 @@ import (
 	"backend/database"
 	"backend/models"
 	"backend/utils"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -185,7 +186,7 @@ func ViewFinal(c *gin.Context) {
 type UserInput struct {
 	Name       string `json:"name" binding:"required" `
 	Email      string `json:"email" binding:"required,email"`
-	RollNumber int    `json:"rollnumber" binding:"required,email"`
+	RollNumber int    `json:"rollnumber" binding:"required"`
 }
 
 
@@ -195,6 +196,7 @@ func RegisterUser(c *gin.Context){
 		c.JSON(http.StatusBadRequest,gin.H{
 			"error": err.Error(),
 		})
+		return 
 	}
 
 	user := models.User{
@@ -205,6 +207,7 @@ func RegisterUser(c *gin.Context){
 
 	if err := database.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email or User already exists"})
+		fmt.Print(err.Error())
 		return
 	}
 
