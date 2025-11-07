@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -20,14 +19,9 @@ func ConnectDatabase(cfg *config.Config) {
 	if databaseURL != "" {
 		dsn = databaseURL
 		log.Println("DB CONNECTED")
-	} else {
-		dsn = fmt.Sprintf(
-			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-			cfg.DBHost, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBPort,
-		)
 	}
-
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
