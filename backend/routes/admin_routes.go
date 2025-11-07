@@ -15,11 +15,12 @@ func AdminRoutes(router *gin.Engine) {
 		protected := api.Group("/")
 		protected.Use(middleware.AdminMiddleware())
 		{
-			protected.GET("/dashboard-admin", controllers.ListTeams)
+			protected.GET("/list-teams", controllers.ListTeams)
+			protected.GET("/list-users", controllers.ListUsers)
 			protected.POST("/add-problem", controllers.AddProblemStatement)
 			protected.GET("/team", controllers.ViewTeamDetails)
-			protected.GET("/swap",controllers.PrepareSwap)
-			protected.POST("/notify",controllers.BroadcastNotification)
+			protected.GET("/swap", controllers.PrepareSwap)
+			protected.POST("/notify", controllers.BroadcastNotification)
 		}
 	}
 }

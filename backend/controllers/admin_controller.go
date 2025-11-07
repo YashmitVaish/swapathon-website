@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	
+
 	"backend/database"
 	"backend/models"
 	"backend/utils"
@@ -51,6 +51,12 @@ type Out struct {
 	ID               string
 	TeamName         string
 	ProblemStatement string
+}
+
+type Uout struct {
+	Name       string
+	Email      string
+	RollNumber int
 }
 
 func ListTeams(c *gin.Context) {
@@ -130,7 +136,7 @@ func ViewTeamDetails(c *gin.Context) {
 			"leader_name":       details.LeaderName,
 			"problem_statement": details.ProblemStatement,
 			"members":           details.Members,
-			"submission":         "no submission yet",
+			"submission":        "no submission yet",
 		})
 		return
 	}
@@ -239,12 +245,37 @@ func BroadcastNotification(c *gin.Context) {
 	}
 
 	if HubInstance == nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Hub not initialized"})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Hub not initialized"})
+		return
+	}
 
 	payload, _ := json.Marshal(notif)
 	HubInstance.Broadcast <- payload
 
 	c.JSON(http.StatusOK, gin.H{"status": "broadcasted"})
+}
+
+func ListUsers(c *gin.Context) {
+	var users []models.User
+
+	if err := database.DB.Find(&users).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve teams",
+		})
+		return
+	}
+
+	uout := make([]Uout, len(users))
+
+	for i := range users {
+		uout[i] = Uout{
+			Name:       users[i].Name,
+			Email:      users[i].Email,
+			RollNumber: users[i].RollNumber,
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"users": uout,
+	})
 }
