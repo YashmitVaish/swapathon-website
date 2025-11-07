@@ -1,23 +1,28 @@
-import { Route, Routes } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
+import { Route, Routes, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Teams from "./pages/Teams";
 import Problems from "./pages/Problems";
 import Notify from "./pages/Notify";
+import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1">
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
+    <Routes>
+      <Route path="/" element={<Login />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/problems" element={<Problems />} />
-          <Route path="/notify" element={<Notify/>}/>
-        </Routes>
-      </div>
-    </div>
+          <Route path="/notify" element={<Notify />} />
+        </Route>
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
