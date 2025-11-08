@@ -5,6 +5,7 @@ import RegistrationBox from "../components/RegistrationBox";
 import { motion } from "framer-motion";
 
 function RegistrationPage() {
+
   return (
     <div
       className="h-screen w-full bg-cover bg-center overflow-y-hidden overflow-x-hidden relative"
@@ -13,7 +14,7 @@ function RegistrationPage() {
       }}
     >
       {/* Soft blur overlay */}
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-[3px]"></div>
+      <div className="absolute inset-0 bg-black/30 "></div>
 
       {/* Content wrapper */}
       <div className="relative flex flex-col h-full">
@@ -28,7 +29,7 @@ function RegistrationPage() {
         </motion.div>
 
         {/* Registration Box */}
-        <div className="flex flex-1 justify-center  items-center lg:items-start px-6 lg:px-20 z-10">
+        <div className="flex flex-1 lg:justify-end justify-center  items-center lg:items-start px-6 lg:px-20 z-10">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}

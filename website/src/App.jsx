@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-import RegistrationPage from "./pages/RegistrationPAge";
-import GuidelinesPage from "./pages/GuidelinesPAge";
+import RegistrationPage from "./pages/RegistrationPage";
+import GuidelinesPage from "./pages/GuidelinesPage";
 import HomePage from "./pages/HomePage";
 import FallingPetals from "./components/petals";
 import PageTransition from "./components/PageTransition";

@@ -184,25 +184,26 @@ func ViewFinal(c *gin.Context) {
 }
 
 type UserInput struct {
-	Name       string `json:"name" binding:"required" `
-	Email      string `json:"email" binding:"required,email"`
-	RollNumber int    `json:"rollnumber" binding:"required"`
+	Name        string `json:"name" binding:"required" `
+	Email       string `json:"email" binding:"required,email"`
+	RollNumber  int    `json:"rollnumber" binding:"required"`
+	PhoneNumber int    `json:"phonenumber" binding:"required"`
 }
 
-
-func RegisterUser(c *gin.Context){
+func RegisterUser(c *gin.Context) {
 	var uinput UserInput
-	if err:= c.ShouldBindJSON(&uinput); err != nil{
-		c.JSON(http.StatusBadRequest,gin.H{
+	if err := c.ShouldBindJSON(&uinput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		return 
+		return
 	}
 
 	user := models.User{
-		Name: uinput.Name,
-		Email: uinput.Email,
-		RollNumber: uinput.RollNumber,
+		Name:        uinput.Name,
+		Email:       uinput.Email,
+		RollNumber:  uinput.RollNumber,
+		PhoneNumber: uinput.PhoneNumber,
 	}
 
 	if err := database.DB.Create(&user).Error; err != nil {

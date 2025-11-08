@@ -8,17 +8,8 @@ import FlyingBirds from "../components/birds";
 import whitebg from "../assets/vansh.png";
 
 import { useNavigate } from "react-router-dom";
-
-
-
-
-
-
 function Homepage() {
-  
-  
     const navigate = useNavigate();
-  
     const handleClick = () => {
       navigate("/register");
     };
@@ -26,15 +17,13 @@ function Homepage() {
     <>
       <div className="relative h-screen w-screen overflow-hidden ">
         <div
-          className="relative h-screen w-screen overflow-hidden "
+          className="relative h-screen w-screen overflow-hidden  md:bg-cover"
           style={{
             backgroundImage: `url(${whitebg})`,
-            backgroundSize: "cover",
             backgroundPosition: "center",
-          
           }}
         >
-          <div className="absolute -top-10 z-0 w-200">
+          <div className="absolute top-10 z-0 w-200">
             <Tree />
           </div>
 
