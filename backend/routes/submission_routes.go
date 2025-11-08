@@ -8,7 +8,7 @@ import (
 )
 
 func SubmissionRoutes(router *gin.Engine) {
-	api := router.Group("/api/submit")
+	api := router.Group("/submit")
 	{
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())

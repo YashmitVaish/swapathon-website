@@ -8,7 +8,7 @@ import (
 )
 
 func TeamRoutes(router *gin.Engine) {
-	api := router.Group("/api/teams")
+	api := router.Group("/teams")
 	{
 		api.POST("/register", controllers.RegisterTeam)
 		api.POST("/login", controllers.LoginTeam)

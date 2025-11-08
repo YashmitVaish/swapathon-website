@@ -8,7 +8,7 @@ import (
 )
 
 func AdminRoutes(router *gin.Engine) {
-	api := router.Group("/api/admin")
+	api := router.Group("/admin")
 	{
 		api.POST("/login", controllers.LoginAdmin)
 
