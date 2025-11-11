@@ -20,7 +20,7 @@ func TeamRoutes(router *gin.Engine) {
 		protected.Use(middleware.AuthMiddleware())
 		{
 			protected.GET("/get-data", controllers.ViewDetails)
-			protected.GET("/view-for-swap", controllers.ViewForSwap)
+			protected.POST("/reveal-feature", controllers.RevealFeature)
 			protected.GET("/viewfinal", controllers.ViewFinal)
 		}
 	}

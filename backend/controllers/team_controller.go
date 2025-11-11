@@ -135,7 +135,11 @@ func ViewDetails(c *gin.Context) {
 
 }
 
-func ViewForSwap(c *gin.Context) {
+type RevealFeatureInput struct {
+	FeatureIndex int `json:"feature_index" binding:"required,min=1,max=4"`
+}
+
+func RevealFeature(c *gin.Context) {
 	teamID := c.GetString("team_id")
 
 	if teamID == "" {
@@ -143,19 +147,46 @@ func ViewForSwap(c *gin.Context) {
 		return
 	}
 
-	var submission models.Submission
-
-	if err := database.DB.Where("swap_with_id = ?", teamID).First(&submission).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
+	var input RevealFeatureInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+
+	var submission models.Submission
+	if err := database.DB.Where("swap_with_id = ?", teamID).First(&submission).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no assigned submission found"})
+		return
+	}
+
+	if submission.LockedIndex == input.FeatureIndex {
+		c.JSON(http.StatusForbidden, gin.H{
+			"error":         "This feature is locked and cannot be edited",
+			"is_locked":     true,
+			"feature_index": input.FeatureIndex,
+		})
+		return
+	}
+
+
+	var content string
+	switch input.FeatureIndex {
+	case 1:
+		content = submission.SOL1
+	case 2:
+		content = submission.SOL2
+	case 3:
+		content = submission.SOL3
+	case 4:
+		content = submission.SOL4
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"sol1":         submission.SOL1,
-		"sol2":         submission.SOL2,
-		"sol3":         submission.SOL3,
-		"sol4":         submission.SOL4,
-		"locked_index": submission.LockedIndex,
+		"feature_index": input.FeatureIndex,
+		"content":       content,
+		"is_locked":     false,
+		"submission_id": submission.ID,
 	})
 }
 
