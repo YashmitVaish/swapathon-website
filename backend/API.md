@@ -71,20 +71,45 @@ Protected (require `Authorization: Bearer <token>`):
   - 401: missing or invalid token
   - 404: team not found
 
-6) GET /api/teams/view-for-swap
+5.5) GET /api/teams/swap-status
 
-- Description: View submission assigned to this team for swap (i.e., the submission whose `swap_with_id` equals this team's id).
+- Description: Check if team has submitted Phase 1 and if swap assignments are ready.
 - Auth: team JWT
 - Success (200):
   {
-  "sol1": "...",
-  "sol2": "...",
-  "sol3": "...",
-  "sol4": "...",
-  "locked_index": 2
+  "phase1_submitted": true/false,
+  "swap_ready": true/false,
+  "message": "..."
+  }
+- Possible responses:
+  - Phase 1 not submitted: { "phase1_submitted": false, "swap_ready": false, "message": "Please submit Phase 1 first" }
+  - Phase 1 submitted, waiting for swap: { "phase1_submitted": true, "swap_ready": false, "message": "Waiting for admin to trigger swap assignments..." }
+  - Swap ready: { "phase1_submitted": true, "swap_ready": true, "message": "Swap is ready! You can now edit features." }
+- Errors:
+  - 401: missing or invalid token
+
+6) POST /api/teams/reveal-feature
+
+- Description: Reveal a specific feature from the submission assigned to this team for swap. Only unlocked features can be revealed.
+- Auth: team JWT
+- Request JSON:
+  { "feature_index": 2 } // integer 1-4
+- Success (200):
+  {
+  "feature_index": 2,
+  "content": "...",
+  "is_locked": false,
+  "submission_id": "uuid"
   }
 - Errors:
+  - 400: invalid payload
   - 401: missing/invalid token
+  - 403: feature is locked
+    {
+    "error": "This feature is locked and cannot be edited",
+    "is_locked": true,
+    "feature_index": 2
+    }
   - 404: no assigned submission found
 
 7) GET /api/teams/viewfinal

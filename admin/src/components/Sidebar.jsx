@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Users, FileText, ChevronLeft, ChevronRight,Bell } from 'lucide-react'
+import { LayoutDashboard, Users, FileText, ChevronLeft, ChevronRight, Bell, UserCircle, Shuffle } from 'lucide-react'
 
 const Sidebar = () => {
   const location = useLocation()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   const navItems = [
-    { icon: LayoutDashboard, text: 'Dashboard', path: '/' },
+    { icon: LayoutDashboard, text: 'Dashboard', path: '/dashboard' },
     { icon: Users, text: 'Teams', path: '/teams' },
     { icon: FileText, text: 'Problems', path: '/problems' },
-    { icon: Bell, text: 'Send Notification', path: '/notify' },
+    { icon: UserCircle, text: 'Users', path: '/users' },
+    { icon: Shuffle, text: 'Swap', path: '/swap' },
+    { icon: Bell, text: 'Notify', path: '/notify' },
   ]
 
   return (
