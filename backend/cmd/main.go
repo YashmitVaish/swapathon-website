@@ -12,7 +12,7 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	database.ConnectDatabase(cfg)
-	database.DB.AutoMigrate(&models.Submission{})
+	database.DB.AutoMigrate()
 
 	router := gin.Default()
 	routes.TeamRoutes(router)
