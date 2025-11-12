@@ -153,10 +153,18 @@ func RevealFeature(c *gin.Context) {
 		return
 	}
 
-
 	var submission models.Submission
 	if err := database.DB.Where("swap_with_id = ?", teamID).First(&submission).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "no assigned submission found"})
+		return
+	}
+
+	if submission.RevealedIndex != nil && *submission.RevealedIndex != input.FeatureIndex {
+		c.JSON(http.StatusForbidden, gin.H{
+			"error":            "You have already revealed another feature",
+			"already_revealed": *submission.RevealedIndex,
+			"requested":        input.FeatureIndex,
+		})
 		return
 	}
 
@@ -169,7 +177,6 @@ func RevealFeature(c *gin.Context) {
 		return
 	}
 
-
 	var content string
 	switch input.FeatureIndex {
 	case 1:
@@ -180,6 +187,15 @@ func RevealFeature(c *gin.Context) {
 		content = submission.SOL3
 	case 4:
 		content = submission.SOL4
+	}
+
+	if submission.RevealedIndex == nil {
+		reveal := input.FeatureIndex
+		submission.RevealedIndex = &reveal
+		if err := database.DB.Save(&submission).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update revealed feature"})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{

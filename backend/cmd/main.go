@@ -3,6 +3,7 @@ package main
 import (
 	"backend/config"
 	"backend/database"
+	"backend/models"
 	"backend/routes"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	database.ConnectDatabase(cfg)
-	database.DB.AutoMigrate()
+	database.DB.AutoMigrate(&models.Submission{})
 
 	router := gin.Default()
 	routes.TeamRoutes(router)

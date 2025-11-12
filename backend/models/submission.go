@@ -17,4 +17,5 @@ type Submission struct {
 	LockedIndex      int       `gorm:"not null;default:0"`
 	IsFinal          bool      `gorm:"default:false"`
 	Evaluation       bool      `gorm:"default:false"`
+	RevealedIndex    *int       `gorm:"default:null"`
 }
