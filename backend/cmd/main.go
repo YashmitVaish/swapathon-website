@@ -3,7 +3,6 @@ package main
 import (
 	"backend/config"
 	"backend/database"
-	"backend/models"
 	"backend/routes"
 
 	"github.com/gin-gonic/gin"
