@@ -88,6 +88,24 @@ Protected (require `Authorization: Bearer <token>`):
 - Errors:
   - 401: missing or invalid token
 
+5.6) GET /api/teams/final-status
+
+- Description: Check if all teams have completed Phase 2 submissions. Used to determine if final results can be viewed.
+- Auth: team JWT
+- Success (200):
+  {
+  "all_completed": true/false,
+  "message": "...",
+  "completed": 5,  // optional: number of teams completed
+  "total": 10      // optional: total number of teams
+  }
+- Possible responses:
+  - All completed: { "all_completed": true, "message": "All teams have completed Phase 2. You can now view your final submission." }
+  - Still waiting: { "all_completed": false, "message": "Waiting for all teams to complete Phase 2...", "completed": 5, "total": 10 }
+- Errors:
+  - 401: missing or invalid token
+  - 500: database error
+
 6) POST /api/teams/reveal-feature
 
 - Description: Reveal a specific feature from the submission assigned to this team for swap. Only unlocked features can be revealed.

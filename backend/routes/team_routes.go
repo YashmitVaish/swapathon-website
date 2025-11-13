@@ -21,6 +21,7 @@ func TeamRoutes(router *gin.Engine) {
 		{
 			protected.GET("/get-data", controllers.ViewDetails)
 			protected.GET("/swap-status", controllers.GetSwapStatus)
+			protected.GET("/final-status", controllers.GetFinalStatus)
 			protected.POST("/reveal-feature", controllers.RevealFeature)
 			protected.GET("/viewfinal", controllers.ViewFinal)
 		}
