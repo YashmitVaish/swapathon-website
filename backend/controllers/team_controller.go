@@ -261,3 +261,23 @@ func RegisterUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered succesfully "})
 }
+
+func GetSwapDetails(c *gin.Context) {
+	teamID := c.GetString("team_id")
+
+	if teamID == "" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized or Invalid token"})
+		return
+	}
+
+	var submission models.Submission
+
+	if err := database.DB.Where("swap_with_id = ?", teamID).First(&submission).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no record found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"problem": submission.ProblemStatement,
+	})
+}
